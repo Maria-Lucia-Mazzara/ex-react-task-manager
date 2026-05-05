@@ -1,24 +1,21 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom"
-import TaskList from "./pages/TaskList"
-import AddTask from "./pages/AddTask"
-import { GlobalProvider } from "./context/GlobalContext"
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import TaskList from "./pages/TaskList";
+import AddTask from "./pages/AddTask";
+import TaskDetail from "./pages/TaskDetail";
+import { GlobalProvider } from "./context/GlobalContext";
 
 function App() {
-
-
   return (
-    <>
-      <GlobalProvider >
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<TaskList />} />
-            <Route path="/add" element={<AddTask />} />
-          </Routes>
-        </BrowserRouter >
-      </GlobalProvider>
-    </>
-  )
+    <GlobalProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<TaskList />} />
+          <Route path="/add" element={<AddTask />} />
+          <Route path="/task/:id" element={<TaskDetail />} />
+        </Routes>
+      </BrowserRouter>
+    </GlobalProvider>
+  );
 }
 
-export default App
-
+export default App;

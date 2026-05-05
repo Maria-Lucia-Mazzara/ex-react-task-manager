@@ -39,7 +39,7 @@ export default function AddTask() {
         // aggiungiamo la task, e svuotiamo l'imput per far rimanere il form vuoto
         setIsSuccess(true);
         setTaskTitle("");
-        descriptionRef.current.value = ""; a
+        descriptionRef.current.value = "";
 
         //  Dopo 2 secondi, il bottone ritornerà allo stato originale
         setTimeout(() => {

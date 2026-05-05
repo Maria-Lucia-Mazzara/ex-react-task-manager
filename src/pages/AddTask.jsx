@@ -1,8 +1,12 @@
-import { useState, useRef, useMemo } from 'react';
+import { useState, useRef, useMemo, useContext } from 'react';
+import { GlobalContext } from '../context/GlobalContext';
 
 const symbols = "!@#$%^&*()_-+=[]{}|;:'\",.<>/?`~";
 
 export default function AddTask() {
+
+
+    const { addTask } = useContext(GlobalContext);
 
     const [taskTitle, setTaskTitle] = useState("");
     //  Nuovo stato per gestire l'effetto di successo per far capire che la task è stata aggiunta 
@@ -21,7 +25,8 @@ export default function AddTask() {
         return "";
     }, [taskTitle]);
 
-    const handleSubmit = event => {
+
+    const handleSubmit = async event => {
         event.preventDefault();
 
         if (taskTitleError) {
@@ -34,17 +39,28 @@ export default function AddTask() {
             status: statusRef.current.value
         };
 
-        console.log('Task da aggiungere:', newTask);
+        try {
+            // Inviamo la task all'API
+            await addTask(newTask);
 
-        // aggiungiamo la task, e svuotiamo l'imput per far rimanere il form vuoto
-        setIsSuccess(true);
-        setTaskTitle("");
-        descriptionRef.current.value = "";
 
-        //  Dopo 2 secondi, il bottone ritornerà allo stato originale
-        setTimeout(() => {
-            setIsSuccess(false);
-        }, 2000);
+            alert("Task creata con successo!");
+
+            // aggiungiamo la task, e svuotiamo l'imput per far rimanere il form vuoto
+            setIsSuccess(true);
+            setTaskTitle("");
+            descriptionRef.current.value = "";
+            statusRef.current.value = "To do";
+
+            //  Dopo 2 secondi, il bottone ritornerà allo stato originale
+            setTimeout(() => {
+                setIsSuccess(false);
+            }, 2000);
+
+        } catch (error) {
+            // Se la chiamata fallisce, mostriamo l'errore
+            alert(error.message);
+        }
     };
 
     return (
@@ -78,7 +94,6 @@ export default function AddTask() {
                         ))}
                     </select>
                 </label>
-
 
                 <button
                     type="submit"
